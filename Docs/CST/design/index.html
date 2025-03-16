@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="开发原则、设计模式及相关资源  Development Principle    Principle FullName Description     单一职责原则 Single Responsibility Principle (SRP) 一个类只负责一个职责   开闭原则 Open&#x2F;Closed Principle (OCP) 软件应对扩展开放，对修改关闭   里氏替换原则 Liskov Su">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Design Pattern">
+<meta property="og:url" content="http://example.com/Docs/CST/design/index.html">
+<meta property="og:site_name" content="Dewedseed&#39;s Blog">
+<meta property="og:description" content="开发原则、设计模式及相关资源  Development Principle    Principle FullName Description     单一职责原则 Single Responsibility Principle (SRP) 一个类只负责一个职责   开闭原则 Open&#x2F;Closed Principle (OCP) 软件应对扩展开放，对修改关闭   里氏替换原则 Liskov Su">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-08-22T10:43:53.000Z">
+<meta property="article:modified_time" content="2025-03-16T04:03:13.753Z">
+<meta property="article:author" content="Dewedseed">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/Docs/CST/design/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":false,"lang":"en","comments":true,"permalink":"http://example.com/Docs/CST/design/index.html","path":"Docs/CST/design/index.html","title":"Design Pattern"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Design Pattern | Dewedseed's Blog
+</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Dewedseed's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-docs"><a href="/Docs/" rel="section"><i class="fa fa-folder-open fa-fw"></i>Docs</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">3</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">0</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">2</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#development-principle"><span class="nav-number">1.</span> <span class="nav-text"> Development Principle</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#design-pattern"><span class="nav-number">2.</span> <span class="nav-text"> Design Pattern</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#best-practice"><span class="nav-number">3.</span> <span class="nav-text"> Best practice</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#resource"><span class="nav-number">4.</span> <span class="nav-text"> Resource</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Dewedseed"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Dewedseed</p>
+  <div class="site-description" itemprop="description">Colorful Fluid Display Worker</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Dewedseed" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Dewedseed" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner page posts-expand">
+    <ul class="sub-menu menu">
+      
+  <li class="menu-item menu-item-cfd"><a href="/Docs/CFD/" rel="section"><i class="fa fa-folder-open fa-fw"></i>CFD</a></li>
+
+
+      
+  <li class="menu-item menu-item-linux"><a href="/Docs/Linux/" rel="section"><i class="fa fa-folder-open fa-fw"></i>Linux</a></li>
+
+
+      
+  <li class="menu-item menu-item-cst"><a href="/Docs/CST/" rel="section"><i class="fa fa-folder-open fa-fw"></i>CST</a></li>
+
+
+    </ul>
+    <ul class="sub-menu menu">
+      
+  <li class="menu-item menu-item-design"><a href="/Docs/CST/design/" rel="section"><i class="fa fa-folder-open fa-fw"></i>design</a></li>
+
+
+      
+  <li class="menu-item menu-item-dl"><a href="/Docs/CST/dl/" rel="section"><i class="fa fa-folder-open fa-fw"></i>dl</a></li>
+
+
+      
+  <li class="menu-item menu-item-lang"><a href="/Docs/CST/lang/" rel="section"><i class="fa fa-folder-open fa-fw"></i>lang</a></li>
+
+
+    </ul>
+
+
+    
+    
+    
+    <div class="post-block" lang="en"><header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">Design Pattern
+</h1>
+
+<div class="post-meta-container">
+  <ul class="breadcrumb">
+            <li><a href="/Docs/">DOCS</a></li>
+            <li><a href="/Docs/CST/">CST</a></li>
+          <li>DESIGN</li>
+  </ul>
+</div>
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+          <p>开发原则、设计模式及相关资源</p>
+<h2 id="development-principle"><a class="markdownIt-Anchor" href="#development-principle"></a> Development Principle</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Principle</th>
+<th style="text-align:left">FullName</th>
+<th style="text-align:left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">单一职责原则</td>
+<td style="text-align:left">Single Responsibility Principle (SRP)</td>
+<td style="text-align:left">一个类只负责一个职责</td>
+</tr>
+<tr>
+<td style="text-align:left">开闭原则</td>
+<td style="text-align:left">Open/Closed Principle (OCP)</td>
+<td style="text-align:left">软件应对扩展开放，对修改关闭</td>
+</tr>
+<tr>
+<td style="text-align:left">里氏替换原则</td>
+<td style="text-align:left">Liskov Substitution Principle (LSP)</td>
+<td style="text-align:left">子类可替换父类而不影响程序</td>
+</tr>
+<tr>
+<td style="text-align:left">接口隔离原则</td>
+<td style="text-align:left">Interface Segregation Principle (ISP)</td>
+<td style="text-align:left">使用多个专门接口而非一个总接口</td>
+</tr>
+<tr>
+<td style="text-align:left">依赖倒置原则</td>
+<td style="text-align:left">Dependency Inversion Principle (DIP)</td>
+<td style="text-align:left">高层模块不依赖低层模块，而依赖抽象</td>
+</tr>
+<tr>
+<td style="text-align:left">迪米特法则</td>
+<td style="text-align:left">Law of Demeter (LoD)</td>
+<td style="text-align:left">一个对象应与直接对象交互 与间接对象隔离</td>
+</tr>
+<tr>
+<td style="text-align:left">合成复用原则</td>
+<td style="text-align:left">Composite/Aggregate Reuse Principle (CARP)</td>
+<td style="text-align:left">使用组合/聚合而非继承来复用代码扩展功能</td>
+</tr>
+</tbody>
+</table>
+<h2 id="design-pattern"><a class="markdownIt-Anchor" href="#design-pattern"></a> Design Pattern</h2>
+<ol>
+<li>创建型模式：如何创建对象，提升代码灵活性和可复用性</li>
+<li>结构型模式：如何将类或对象组装成结构，并保持结构的灵活和高效</li>
+<li>行为型模式：类与对象间如何交互、划分职责以更好完成任务</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Type</th>
+<th style="text-align:left">Design Pattern</th>
+<th style="text-align:center">Popularity</th>
+<th style="text-align:left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">创建型模式</td>
+<td style="text-align:left"><a href="/Docs/CST/design/Design-Pattern-Singleton"><strong>单例模式</strong></a></td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⋆</mo></mrow><annotation encoding="application/x-tex">\star</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4653em;"></span><span class="mord">⋆</span></span></span></span></td>
+<td style="text-align:left">一个类只有一个实例并提供访问该实例的全局节点</td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left"><a href="/Docs/CST/design/Design-Pattern-Factory"><strong>工厂方法模式</strong></a></td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">★</mi></mrow><annotation encoding="application/x-tex">\bigstar</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8867em;vertical-align:-0.1944em;"></span><span class="mord amsrm">★</span></span></span></span></td>
+<td style="text-align:left">父类提供创建对象的接口 子类决定实例化对象类型</td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left"><a href="/Docs/CST/design/Design-Pattern-Builder"><strong>建造者模式</strong></a></td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">★</mi></mrow><annotation encoding="application/x-tex">\bigstar</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8867em;vertical-align:-0.1944em;"></span><span class="mord amsrm">★</span></span></span></span></td>
+<td style="text-align:left">将复杂对象构建过程分解为简单步骤</td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left">抽象工厂模式</td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">★</mi></mrow><annotation encoding="application/x-tex">\bigstar</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8867em;vertical-align:-0.1944em;"></span><span class="mord amsrm">★</span></span></span></span></td>
+<td style="text-align:left">创建一系列相关对象而无需指定具体类</td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left">原型模式</td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⋆</mo></mrow><annotation encoding="application/x-tex">\star</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4653em;"></span><span class="mord">⋆</span></span></span></span></td>
+<td style="text-align:left">可复制现有对象创建新对象 且代码无需依赖所属类</td>
+</tr>
+<tr>
+<td style="text-align:left">结构型模式</td>
+<td style="text-align:left"><a href="/Docs/CST/design/Design-Pattern-Adapter"><strong>适配器模式</strong></a></td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">★</mi></mrow><annotation encoding="application/x-tex">\bigstar</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8867em;vertical-align:-0.1944em;"></span><span class="mord amsrm">★</span></span></span></span></td>
+<td style="text-align:left">可转换对象接口 使得接口不兼容对象能够交互</td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left"><a href="/Docs/CST/design/Design-Pattern-Decorator"><strong>装饰器模式</strong></a></td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⋆</mo></mrow><annotation encoding="application/x-tex">\star</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4653em;"></span><span class="mord">⋆</span></span></span></span></td>
+<td style="text-align:left">动态为对象添加方法 不影响其他对象</td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left"><a href="/Docs/CST/design/Design-Pattern-Proxy"><strong>代理模式</strong></a></td>
+<td style="text-align:center"></td>
+<td style="text-align:left">为对象提供替代或占位符 控制原对象访问</td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left">组合模式</td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⋆</mo></mrow><annotation encoding="application/x-tex">\star</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4653em;"></span><span class="mord">⋆</span></span></span></span></td>
+<td style="text-align:left">将对象组成树形结构 表示部分-整体层次</td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left">外观模式</td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⋆</mo></mrow><annotation encoding="application/x-tex">\star</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4653em;"></span><span class="mord">⋆</span></span></span></span></td>
+<td style="text-align:left">为程序库、框架或其他复杂类提供简单接口</td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left">享元模式</td>
+<td style="text-align:center"></td>
+<td style="text-align:left">共享多个对象相同状态 在有限内存中提高细粒度</td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left">桥接模式</td>
+<td style="text-align:center"></td>
+<td style="text-align:left">抽象部分与实现部分分离 在开发时独立调用</td>
+</tr>
+<tr>
+<td style="text-align:left">行为型模式</td>
+<td style="text-align:left"><a href="/Docs/CST/design/Design-Pattern-Iterator"><strong>迭代器模式</strong></a></td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">★</mi></mrow><annotation encoding="application/x-tex">\bigstar</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8867em;vertical-align:-0.1944em;"></span><span class="mord amsrm">★</span></span></span></span></td>
+<td style="text-align:left">在不暴露底层数据结构情况下遍历集合中元素</td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left"><a href="/Docs/CST/design/Design-Pattern-Strategy"><strong>策略模式</strong></a></td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">★</mi></mrow><annotation encoding="application/x-tex">\bigstar</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8867em;vertical-align:-0.1944em;"></span><span class="mord amsrm">★</span></span></span></span></td>
+<td style="text-align:left">定义一系列算法 封装至不同类 使得类能够相互替换</td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left"><a href="/Docs/CST/design/Design-Pattern-Observer"><strong>观察者模式</strong></a></td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">★</mi></mrow><annotation encoding="application/x-tex">\bigstar</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8867em;vertical-align:-0.1944em;"></span><span class="mord amsrm">★</span></span></span></span></td>
+<td style="text-align:left">对象状态改变时通知其&quot;观察者&quot;(依赖)更新</td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left"><strong>命令模式</strong></td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">★</mi></mrow><annotation encoding="application/x-tex">\bigstar</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8867em;vertical-align:-0.1944em;"></span><span class="mord amsrm">★</span></span></span></span></td>
+<td style="text-align:left">将请求封装为对象 通过队列或日志操作请求</td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left"><a href="/Docs/CST/design/Design-Pattern-Template"><strong>模板方法模式</strong></a></td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⋆</mo></mrow><annotation encoding="application/x-tex">\star</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4653em;"></span><span class="mord">⋆</span></span></span></span></td>
+<td style="text-align:left">在父类中定义算法框架 子类不修改结构仅实现特定步骤</td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left"><a href="/Docs/CST/design/Design-Pattern-Chain"><strong>责任链模式</strong></a></td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⋆</mo></mrow><annotation encoding="application/x-tex">\star</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4653em;"></span><span class="mord">⋆</span></span></span></span></td>
+<td style="text-align:left">请求沿处理者链传递 直到完成任务</td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left">状态模式</td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⋆</mo></mrow><annotation encoding="application/x-tex">\star</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4653em;"></span><span class="mord">⋆</span></span></span></span></td>
+<td style="text-align:left">对象在内部状态变化时改变行为</td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left">中介者模式</td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⋆</mo></mrow><annotation encoding="application/x-tex">\star</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4653em;"></span><span class="mord">⋆</span></span></span></span></td>
+<td style="text-align:left">限制对象之间的交互 通过中介者实现 减少对象依赖关系</td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left">备忘录模式</td>
+<td style="text-align:center"></td>
+<td style="text-align:left">允许在不暴露对象细节情况下保存和恢复对象状态</td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left">访问者模式</td>
+<td style="text-align:center"></td>
+<td style="text-align:left">隔离算法与操作对象</td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left">解释器模式</td>
+<td style="text-align:center"></td>
+<td style="text-align:left">定义语法规则 建立解释器解析和执行特定表达式</td>
+</tr>
+</tbody>
+</table>
+<h2 id="best-practice"><a class="markdownIt-Anchor" href="#best-practice"></a> Best practice</h2>
+<ol>
+<li>产品注册模板类 + 单例工厂模板类</li>
+</ol>
+<h2 id="resource"><a class="markdownIt-Anchor" href="#resource"></a> Resource</h2>
+<ol>
+<li>书籍
+<ul>
+<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/34262305/">《设计模式：可复用面向对象软件的基础》</a></li>
+<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/26933281/">《图解设计模式》</a></li>
+<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/2334288/">《大话设计模式》</a></li>
+</ul>
+</li>
+<li>博客
+<ul>
+<li><a target="_blank" rel="noopener" href="https://refactoring.guru/design-patterns">设计模式详解</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.runoob.com/design-pattern/design-pattern-tutorial.html">菜鸟教程 | 设计模式</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/isocpp/CppCoreGuidelines">C++ Core Guidelines</a></li>
+<li><a target="_blank" rel="noopener" href="https://zoziha.github.io/Fortran-Design-Patterns/">Fortran设计模式</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/hustyangju/article/details/46880009">为什么设计模式在C++社区没有Java社区流行?</a></li>
+</ul>
+</li>
+<li>视频
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1za411p7Ny/?spm_id_from=333.337.search-card.all.click&amp;vd_source=21c5829642d727a3758401baa3c970e1">程序员鱼皮 | 学设计模式前，请务必先看完这个！</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1wU4y1E7xG/?spm_id_from=333.337.search-card.all.click">方流返 | Modern Fortran的23种设计模式</a></li>
+</ul>
+</li>
+</ol>
+
+      </div>
+      
+      
+      
+    </div>
+  <ul class="breadcrumb">
+            <li><a href="/Docs/">DOCS</a></li>
+            <li><a href="/Docs/CST/">CST</a></li>
+          <li>DESIGN</li>
+  </ul>
+
+    
+    
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2019 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Dewedseed</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">1k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">5 mins.</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/Dewedseed/Dewedseed.github.io" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js","integrity":"sha256-stuqcu2FrjYCXDOytWFA5SoUE/r3nkp6gTglzNSlavU="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css" integrity="sha256-UF1fgpAiu3tPJN/uCqEUHNe7pnr+QR0SQDNfgglgtcM=" crossorigin="anonymous">
+  <script class="next-config" data-name="katex" type="application/json">{"copy_tex_js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/copy-tex.min.js","integrity":"sha256-Us54+rSGDSTvIhKKUs4kygE2ipA0RXpWWh0/zLqw3bs="}}</script>
+  <script src="/js/third-party/math/katex.js"></script>
+
+
+
+</body>
+</html>

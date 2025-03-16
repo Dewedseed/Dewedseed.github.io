@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="图论：二部图（二分图）基本概念与判断、最大匹配问题、稳定婚配问题">
+<meta property="og:type" content="website">
+<meta property="og:title" content="图论-二部图算法及实现">
+<meta property="og:url" content="http://example.com/Docs/CST/graph/graph-bipartite-graph.html">
+<meta property="og:site_name" content="Dewedseed&#39;s Blog">
+<meta property="og:description" content="图论：二部图（二分图）基本概念与判断、最大匹配问题、稳定婚配问题">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-03-16T04:12:53.449Z">
+<meta property="article:modified_time" content="2025-02-19T13:56:06.536Z">
+<meta property="article:author" content="Dewedseed">
+<meta property="article:tag" content="Graph">
+<meta property="article:tag" content="CPP">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/Docs/CST/graph/graph-bipartite-graph">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":false,"lang":"en","comments":true,"permalink":"http://example.com/Docs/CST/graph/graph-bipartite-graph.html","path":"Docs/CST/graph/graph-bipartite-graph.html","title":"图论-二部图算法及实现"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>图论-二部图算法及实现 | Dewedseed's Blog
+</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Dewedseed's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-docs"><a href="/Docs/" rel="section"><i class="fa fa-folder-open fa-fw"></i>Docs</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">3</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">0</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">2</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#bipartite-graph"><span class="nav-number">1.</span> <span class="nav-text"> Bipartite Graph</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#testing"><span class="nav-number">2.</span> <span class="nav-text"> Testing</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#max-matching"><span class="nav-number">3.</span> <span class="nav-text"> Max-Matching</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#unweighted-bipartite-graph"><span class="nav-number">3.1.</span> <span class="nav-text"> Unweighted Bipartite Graph</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#weighted-bipartite-graph"><span class="nav-number">3.2.</span> <span class="nav-text"> Weighted Bipartite Graph</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hungarian-algorithm"><span class="nav-number">3.3.</span> <span class="nav-text"> Hungarian Algorithm</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#stable-marriage-problem"><span class="nav-number">4.</span> <span class="nav-text"> Stable Marriage Problem</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#gale-shapley-algorithm"><span class="nav-number">4.1.</span> <span class="nav-text"> Gale Shapley Algorithm</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Dewedseed"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Dewedseed</p>
+  <div class="site-description" itemprop="description">Colorful Fluid Display Worker</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Dewedseed" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Dewedseed" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner page posts-expand">
+
+
+    
+    
+    
+    <div class="post-block" lang="en"><header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">图论-二部图算法及实现
+</h1>
+
+<div class="post-meta-container">
+  <ul class="breadcrumb">
+            <li><a href="/Docs/">DOCS</a></li>
+            <li><a href="/Docs/CST/">CST</a></li>
+            <li><a href="/Docs/CST/graph/">GRAPH</a></li>
+            <li>GRAPH-BIPARTITE-GRAPH</li>
+  </ul>
+</div>
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+          <p>图论：二部图（二分图）基本概念与判断、最大匹配问题、稳定婚配问题</p>
+<span id="more"></span>
+<h2 id="bipartite-graph"><a class="markdownIt-Anchor" href="#bipartite-graph"></a> Bipartite Graph</h2>
+<ul>
+<li>bipartite graph <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">G</mi><mo>=</mo><mo stretchy="false">(</mo><mi mathvariant="script">U</mi><mo separator="true">,</mo><mi mathvariant="script">V</mi><mo separator="true">,</mo><mi mathvariant="script">E</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\mathcal{G} = (\mathcal{U}, \mathcal{V}, \mathcal{E})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7805em;vertical-align:-0.0972em;"></span><span class="mord mathcal" style="margin-right:0.0593em;">G</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathcal" style="margin-right:0.09931em;">U</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathcal" style="margin-right:0.08222em;">V</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathcal" style="margin-right:0.08944em;">E</span><span class="mclose">)</span></span></span></span>
+<ul>
+<li>All the edges are between <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">U</mi><mo separator="true">,</mo><mi mathvariant="script">V</mi></mrow><annotation encoding="application/x-tex">\mathcal{U, V}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathcal" style="margin-right:0.09931em;">U</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathcal" style="margin-right:0.08222em;">V</span></span></span></span></span></li>
+<li>No edges in <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">U</mi><mo separator="true">,</mo><mi mathvariant="script">V</mi></mrow><annotation encoding="application/x-tex">\mathcal{U, V}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathcal" style="margin-right:0.09931em;">U</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathcal" style="margin-right:0.08222em;">V</span></span></span></span></span></li>
+</ul>
+</li>
+<li>Abstract: matching problem</li>
+</ul>
+<h2 id="testing"><a class="markdownIt-Anchor" href="#testing"></a> Testing</h2>
+<ul>
+<li>basic idea (BFS)
+<ul>
+<li>check neighbor vertices</li>
+</ul>
+</li>
+<li>pseudo code</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">function isBipartite(graph):</span><br><span class="line">    <span class="comment"># Initialize an array to store the color of each vertex (&#x27;none&#x27; means uncolored)</span></span><br><span class="line">    color = [<span class="string">&#x27;none&#x27;</span>] * graph.size</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Traverse all vertices to handle disconnected graphs</span></span><br><span class="line">    <span class="keyword">for</span> start_vertex <span class="keyword">in</span> <span class="built_in">range</span>(graph.size):</span><br><span class="line">        <span class="keyword">if</span> color[start_vertex] == <span class="string">&#x27;none&#x27;</span>:  <span class="comment"># If the vertex is not colored</span></span><br><span class="line">            <span class="comment"># Start BFS from the vertex</span></span><br><span class="line">            queue.push(start_vertex)</span><br><span class="line">            color[start_vertex] = <span class="string">&#x27;red&#x27;</span>  <span class="comment"># Assign the first color (red)</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">while</span> queue <span class="keyword">is</span> <span class="keyword">not</span> empty:</span><br><span class="line">                current_vertex = queue.front()</span><br><span class="line">                queue.pop()</span><br><span class="line"></span><br><span class="line">                <span class="keyword">for</span> neighbor <span class="keyword">in</span> graph.adjacent(current_vertex):</span><br><span class="line">                    <span class="keyword">if</span> color[neighbor] == <span class="string">&#x27;none&#x27;</span>:  <span class="comment"># If the neighbor is not colored</span></span><br><span class="line">                        <span class="comment"># Assign the opposite color</span></span><br><span class="line">                        color[neighbor] = color[current_vertex] == <span class="string">&#x27;red&#x27;</span> ? <span class="string">&#x27;blue&#x27;</span> : <span class="string">&#x27;red&#x27;</span></span><br><span class="line">                        queue.push(neighbor)</span><br><span class="line">                    <span class="comment"># If the neighbor has the same color</span></span><br><span class="line">                    <span class="keyword">else</span> <span class="keyword">if</span> color[neighbor] == color[current_vertex]:</span><br><span class="line">                        <span class="comment"># The graph is not bipartite</span></span><br><span class="line">                        <span class="keyword">return</span> false</span><br><span class="line">    <span class="comment"># The graph is bipartite</span></span><br><span class="line">    <span class="keyword">return</span> true</span><br></pre></td></tr></table></figure>
+<p>Time Complexity: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi mathvariant="normal">∣</mi><mi>ε</mi><mi mathvariant="normal">∣</mi><mo>+</mo><mi mathvariant="normal">∣</mi><mi mathvariant="script">V</mi><mi mathvariant="normal">∣</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(|\varepsilon| + |\mathcal{V}|)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">∣</span><span class="mord mathnormal">ε</span><span class="mord">∣</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∣</span><span class="mord mathcal" style="margin-right:0.08222em;">V</span><span class="mord">∣</span><span class="mclose">)</span></span></span></span></p>
+<h2 id="max-matching"><a class="markdownIt-Anchor" href="#max-matching"></a> Max-Matching</h2>
+<p>Matching: subset of edges without common vertices</p>
+<h3 id="unweighted-bipartite-graph"><a class="markdownIt-Anchor" href="#unweighted-bipartite-graph"></a> Unweighted Bipartite Graph</h3>
+<p>Question: Maximum-Cardinality Bipartite Matching (MCBM)<br />
+Method: Reducing Bipartite Matching to Network Flow</p>
+<ol>
+<li>Make the edges directed</li>
+<li>Add source and sink</li>
+<li>All the edge weights (capacities) are same</li>
+<li>Find the max-flow using any algorithm</li>
+<li>return MCBM = max-flow</li>
+</ol>
+<h3 id="weighted-bipartite-graph"><a class="markdownIt-Anchor" href="#weighted-bipartite-graph"></a> Weighted Bipartite Graph</h3>
+<p>Question: Maximum-Weight Bipartite Matching (MWBM)<br />
+Method: flip the signs of all the weights and finding the minimum-weight</p>
+<h3 id="hungarian-algorithm"><a class="markdownIt-Anchor" href="#hungarian-algorithm"></a> Hungarian Algorithm</h3>
+<p>Kuhn H W. The Hungarian method for the assignment problem[J]. Naval research logistics quarterly, 1955, 2(1‐2): 83-97.</p>
+<ul>
+<li>Hungarian algorithm is for finding the minimum-weight bipartite matching</li>
+<li>Condition: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">U</mi><mo>=</mo><mi mathvariant="script">V</mi><mo>=</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">\mathcal{U} = \mathcal{V} = n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathcal" style="margin-right:0.09931em;">U</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathcal" style="margin-right:0.08222em;">V</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span></li>
+<li>Time Complexity: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mn>3</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n^3)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></li>
+</ul>
+<h2 id="stable-marriage-problem"><a class="markdownIt-Anchor" href="#stable-marriage-problem"></a> Stable Marriage Problem</h2>
+<ul>
+<li>Stable state: the current matching cannot be changed based on weights</li>
+<li>Condition: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">U</mi><mo>=</mo><mi mathvariant="script">V</mi><mo>=</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">\mathcal{U} = \mathcal{V} = n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathcal" style="margin-right:0.09931em;">U</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathcal" style="margin-right:0.08222em;">V</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span></li>
+</ul>
+<h3 id="gale-shapley-algorithm"><a class="markdownIt-Anchor" href="#gale-shapley-algorithm"></a> Gale Shapley Algorithm</h3>
+<p>Gale D, Shapley L S. College admissions and the stability of marriage[J]. The American Mathematical Monthly, 1962, 69(1): 9-15.</p>
+<ul>
+<li>Time Complexity: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></li>
+</ul>
+
+      </div>
+      
+      
+      
+    </div>
+  <ul class="breadcrumb">
+            <li><a href="/Docs/">DOCS</a></li>
+            <li><a href="/Docs/CST/">CST</a></li>
+            <li><a href="/Docs/CST/graph/">GRAPH</a></li>
+            <li>GRAPH-BIPARTITE-GRAPH</li>
+  </ul>
+
+    
+    
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2019 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Dewedseed</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">1k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">5 mins.</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/Dewedseed/Dewedseed.github.io" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js","integrity":"sha256-stuqcu2FrjYCXDOytWFA5SoUE/r3nkp6gTglzNSlavU="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css" integrity="sha256-UF1fgpAiu3tPJN/uCqEUHNe7pnr+QR0SQDNfgglgtcM=" crossorigin="anonymous">
+  <script class="next-config" data-name="katex" type="application/json">{"copy_tex_js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/copy-tex.min.js","integrity":"sha256-Us54+rSGDSTvIhKKUs4kygE2ipA0RXpWWh0/zLqw3bs="}}</script>
+  <script src="/js/third-party/math/katex.js"></script>
+
+
+
+</body>
+</html>

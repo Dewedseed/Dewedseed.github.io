@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Builder 建造者模式 (生成器模式) 使用相同的创建代码生成不同类型和形式的对象、分步骤创建复杂对象  构造具有复杂内部属性的对象 构造不同类型或形式的对象 若内部属性简单会造成代码冗余  以构造正方体为例，不使用建造者模式时 1234567&#x2F;&#x2F; create three cube&#x2F;&#x2F;   cube 1: vertices1, color1, material1&#x2F;&#x2F;   cube 2: v">
+<meta property="og:type" content="website">
+<meta property="og:title" content="设计模式-建造者模式">
+<meta property="og:url" content="http://example.com/Docs/CST/design/Design-Pattern-Builder.html">
+<meta property="og:site_name" content="Dewedseed&#39;s Blog">
+<meta property="og:description" content="Builder 建造者模式 (生成器模式) 使用相同的创建代码生成不同类型和形式的对象、分步骤创建复杂对象  构造具有复杂内部属性的对象 构造不同类型或形式的对象 若内部属性简单会造成代码冗余  以构造正方体为例，不使用建造者模式时 1234567&#x2F;&#x2F; create three cube&#x2F;&#x2F;   cube 1: vertices1, color1, material1&#x2F;&#x2F;   cube 2: v">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-03-16T03:59:17.721Z">
+<meta property="article:modified_time" content="2025-02-25T09:57:11.114Z">
+<meta property="article:author" content="Dewedseed">
+<meta property="article:tag" content="CPP">
+<meta property="article:tag" content="Fortran">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/Docs/CST/design/Design-Pattern-Builder">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":false,"lang":"en","comments":true,"permalink":"http://example.com/Docs/CST/design/Design-Pattern-Builder.html","path":"Docs/CST/design/Design-Pattern-Builder.html","title":"设计模式-建造者模式"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>设计模式-建造者模式 | Dewedseed's Blog
+</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Dewedseed's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-docs"><a href="/Docs/" rel="section"><i class="fa fa-folder-open fa-fw"></i>Docs</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">3</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">0</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">2</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#builder"><span class="nav-number">1.</span> <span class="nav-text"> Builder</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cpp"><span class="nav-number">2.</span> <span class="nav-text"> CPP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fortran"><span class="nav-number">3.</span> <span class="nav-text"> Fortran</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#reference"><span class="nav-number">4.</span> <span class="nav-text"> Reference</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Dewedseed"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Dewedseed</p>
+  <div class="site-description" itemprop="description">Colorful Fluid Display Worker</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Dewedseed" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Dewedseed" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner page posts-expand">
+
+
+    
+    
+    
+    <div class="post-block" lang="en"><header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">设计模式-建造者模式
+</h1>
+
+<div class="post-meta-container">
+  <ul class="breadcrumb">
+            <li><a href="/Docs/">DOCS</a></li>
+            <li><a href="/Docs/CST/">CST</a></li>
+            <li><a href="/Docs/CST/design/">DESIGN</a></li>
+            <li>DESIGN-PATTERN-BUILDER</li>
+  </ul>
+</div>
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+          <h2 id="builder"><a class="markdownIt-Anchor" href="#builder"></a> Builder</h2>
+<p>建造者模式 (生成器模式) 使用相同的创建代码生成不同类型和形式的对象、分步骤创建复杂对象</p>
+<ul>
+<li>构造具有复杂内部属性的对象</li>
+<li>构造不同类型或形式的对象</li>
+<li>若内部属性简单会造成代码冗余</li>
+</ul>
+<p>以构造正方体为例，不使用建造者模式时</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// create three cube</span></span><br><span class="line"><span class="comment">//   cube 1: vertices1, color1, material1</span></span><br><span class="line"><span class="comment">//   cube 2: vertices1, color2</span></span><br><span class="line"><span class="comment">//   cube 3: vertices2, material2</span></span><br><span class="line"><span class="function">Cube <span class="title">cube1</span><span class="params">(vertices1, color1, material1)</span></span>;</span><br><span class="line"><span class="function">Cube <span class="title">cube2</span><span class="params">(vertices1, color2, material1)</span></span>;</span><br><span class="line"><span class="function">Cube <span class="title">cube3</span><span class="params">(vertices2, color1, material2)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>使用建造者模式时</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Cube cube1 = <span class="built_in">CubeBuilder</span>()</span><br><span class="line">    .<span class="built_in">withVertices</span>(vertices1)</span><br><span class="line">    .<span class="built_in">withColor</span>(color1)</span><br><span class="line">    .<span class="built_in">withMaterial</span>(material1)</span><br><span class="line">    .<span class="built_in">build</span>();</span><br><span class="line"></span><br><span class="line">Cube cube2 = <span class="built_in">CubeBuilder</span>()</span><br><span class="line">    .<span class="built_in">withVertices</span>(vertices1)</span><br><span class="line">    .<span class="built_in">withColor</span>(color2)</span><br><span class="line">    .<span class="built_in">build</span>();</span><br><span class="line"></span><br><span class="line">Cube cube3 = <span class="built_in">CubeBuilder</span>()</span><br><span class="line">    .<span class="built_in">withVertices</span>(vertices2)</span><br><span class="line">    .<span class="built_in">withMaterial</span>(material2)</span><br><span class="line">    .<span class="built_in">build</span>();</span><br></pre></td></tr></table></figure>
+<p>对比使用建造者模式前后差别</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">性质</th>
+<th style="text-align:left">直接模式</th>
+<th style="text-align:left">建造者模式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">对象构造</td>
+<td style="text-align:left">构造所需属性参数多</td>
+<td style="text-align:left">逐步构造对象</td>
+</tr>
+<tr>
+<td style="text-align:left">可读性</td>
+<td style="text-align:left">难以追踪属性参数用途</td>
+<td style="text-align:left">属性参数用途清晰</td>
+</tr>
+<tr>
+<td style="text-align:left">灵活性</td>
+<td style="text-align:left">构造多个对象需要重复代码</td>
+<td style="text-align:left">易创建不同属性组合的对象</td>
+</tr>
+<tr>
+<td style="text-align:left">维护性</td>
+<td style="text-align:left">添加属性需要修改构造代码</td>
+<td style="text-align:left">添加属性无需修改构造代码</td>
+</tr>
+</tbody>
+</table>
+<h2 id="cpp"><a class="markdownIt-Anchor" href="#cpp"></a> CPP</h2>
+<div class="tabs" id="implementation-cpp"><ul class="nav-tabs"><li class="tab active"><a href="#implementation-cpp-1">经典模式</a></li><li class="tab"><a href="#implementation-cpp-2">链式模式</a></li></ul><div class="tab-content"><div class="tab-pane active" id="implementation-cpp-1"><p><strong>基本结构</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Member</th>
+<th style="text-align:left">Full Name</th>
+<th style="text-align:left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">产品类</td>
+<td style="text-align:left">Product</td>
+<td style="text-align:left">包含多个部分或属性的复杂对象</td>
+</tr>
+<tr>
+<td style="text-align:left">抽象建造者</td>
+<td style="text-align:left">Abstract Builder</td>
+<td style="text-align:left">产品构建方法的抽象接口</td>
+</tr>
+<tr>
+<td style="text-align:left">具体建造者</td>
+<td style="text-align:left">Concrete Builder</td>
+<td style="text-align:left">具体实现产品各部分或属性的构建方法</td>
+</tr>
+<tr>
+<td style="text-align:left">指导者</td>
+<td style="text-align:left">Director</td>
+<td style="text-align:left">定义构建顺序，调用建造方法构建产品</td>
+</tr>
+</tbody>
+</table>
+<p><strong>UML结构图</strong></p>
+<p><strong>实现步骤</strong></p>
+<ol>
+<li>定义产品类</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Product</span> &#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    std::vector&lt;std::string&gt; parts;</span><br><span class="line">    <span class="type">int</span> id;</span><br><span class="line">    std::string name;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Product</span>(<span class="type">int</span> id, <span class="type">const</span> std::string&amp; name) : <span class="built_in">id</span>(id), <span class="built_in">name</span>(name) &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">AddPart</span><span class="params">(<span class="type">const</span> std::string&amp; part)</span> </span>&#123;</span><br><span class="line">        parts.<span class="built_in">push_back</span>(part);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">ShowParts</span><span class="params">()</span> <span class="type">const</span> </span>&#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Product parts:&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">const</span> <span class="keyword">auto</span>&amp; part : parts) &#123;</span><br><span class="line">            std::cout &lt;&lt; part &lt;&lt; std::endl;</span><br><span class="line">        &#125;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;ID: &quot;</span> &lt;&lt; id &lt;&lt; <span class="string">&quot;, Name: &quot;</span> &lt;&lt; name &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>定义抽象建造者</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Builder</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">virtual</span> ~<span class="built_in">Builder</span>() = <span class="keyword">default</span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">BuildPartA</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">BuildPartB</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> Product <span class="title">GetProduct</span><span class="params">()</span> <span class="type">const</span> </span>= <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>定义具体建造者</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ConcreteBuilder1</span> : <span class="keyword">public</span> Builder &#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    Product* product;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">ConcreteBuilder1</span>() : <span class="built_in">product</span>(<span class="literal">nullptr</span>) &#123;&#125;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">ResetProduct</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        product = <span class="keyword">new</span> <span class="built_in">Product</span>(<span class="number">101</span>, <span class="string">&quot;Product Type 1&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">BuildPartA</span><span class="params">()</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">        product-&gt;<span class="built_in">AddPart</span>(<span class="string">&quot;PartA (Type 1)&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">BuildPartB</span><span class="params">()</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">        product-&gt;<span class="built_in">AddPart</span>(<span class="string">&quot;PartB (Type 1)&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">Product <span class="title">GetProduct</span><span class="params">()</span> <span class="type">const</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> *product;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ConcreteBuilder2</span> : <span class="keyword">public</span> Builder &#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    Product* product;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">ConcreteBuilder2</span>() : <span class="built_in">product</span>(<span class="literal">nullptr</span>) &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">ResetProduct</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        product = <span class="keyword">new</span> <span class="built_in">Product</span>(<span class="number">202</span>, <span class="string">&quot;Product Type 2&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">BuildPartA</span><span class="params">()</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">        product-&gt;<span class="built_in">AddPart</span>(<span class="string">&quot;PartA (Type 2)&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">BuildPartB</span><span class="params">()</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">        product-&gt;<span class="built_in">AddPart</span>(<span class="string">&quot;PartB (Type 2)&quot;</span>);</span><br><span class="line">        product-&gt;<span class="built_in">AddPart</span>(<span class="string">&quot;ExtraPartB (Type 2)&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">Product <span class="title">GetProduct</span><span class="params">()</span> <span class="type">const</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> *product;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>定义指导者</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Director</span> &#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    Builder* builder;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Director</span>(Builder* builder) : <span class="built_in">builder</span>(builder) &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">Product <span class="title">Construct</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        builder-&gt;<span class="built_in">BuildPartA</span>();</span><br><span class="line">        builder-&gt;<span class="built_in">BuildPartB</span>();</span><br><span class="line">        <span class="keyword">return</span> builder-&gt;<span class="built_in">GetProduct</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ol start="5">
+<li>客户代码</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">ConcreteBuilder1 builder1;</span><br><span class="line">builder<span class="number">1.</span><span class="built_in">ResetProduct</span>();</span><br><span class="line"><span class="function">Director <span class="title">director1</span><span class="params">(&amp;builder1)</span></span>;</span><br><span class="line">Product product1 = director<span class="number">1.</span><span class="built_in">Construct</span>();</span><br><span class="line">product<span class="number">1.</span><span class="built_in">ShowParts</span>();</span><br><span class="line"></span><br><span class="line">ConcreteBuilder2 builder2;</span><br><span class="line">builder<span class="number">2.</span><span class="built_in">ResetProduct</span>();</span><br><span class="line"><span class="function">Director <span class="title">director2</span><span class="params">(&amp;builder2)</span></span>;</span><br><span class="line">Product product2 = director<span class="number">2.</span><span class="built_in">Construct</span>();</span><br><span class="line">product<span class="number">2.</span><span class="built_in">ShowParts</span>();</span><br></pre></td></tr></table></figure></div><div class="tab-pane" id="implementation-cpp-2"><p><strong>基于 Fluent Interface 实现链式调用（Method Chaining）来提高代码的可读性和可维护性</strong></p>
+<ol>
+<li>定义产品类</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Product</span> &#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    std::vector&lt;std::string&gt; parts;</span><br><span class="line">    <span class="type">int</span> id;</span><br><span class="line">    std::string name;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Product</span>(<span class="type">int</span> id, <span class="type">const</span> std::string&amp; name) : <span class="built_in">id</span>(id), <span class="built_in">name</span>(name) &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">AddPart</span><span class="params">(<span class="type">const</span> std::string&amp; part)</span> </span>&#123;</span><br><span class="line">        parts.<span class="built_in">push_back</span>(part);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">ShowParts</span><span class="params">()</span> <span class="type">const</span> </span>&#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Product parts:&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">const</span> <span class="keyword">auto</span>&amp; part : parts) &#123;</span><br><span class="line">            std::cout &lt;&lt; part &lt;&lt; std::endl;</span><br><span class="line">        &#125;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;ID: &quot;</span> &lt;&lt; id &lt;&lt; <span class="string">&quot;, Name: &quot;</span> &lt;&lt; name &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>定义建造者</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ChainBuilder</span> &#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    Product product;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">ChainBuilder</span>(<span class="type">int</span> id, <span class="type">const</span> std::string&amp; name)</span><br><span class="line">        : <span class="built_in">product</span>(id, name) &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">ChainBuilder* <span class="title">AddPart</span><span class="params">(<span class="type">const</span> std::string&amp; part)</span> </span>&#123;</span><br><span class="line">        product.<span class="built_in">AddPart</span>(part);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">Product <span class="title">Build</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> product;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>客户代码</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Product product1 = <span class="built_in">ChainBuilder</span>(<span class="number">101</span>, <span class="string">&quot;Product 1&quot;</span>)</span><br><span class="line">    .<span class="built_in">AddPart</span>(<span class="string">&quot;PartA&quot;</span>)</span><br><span class="line">    .<span class="built_in">AddPart</span>(<span class="string">&quot;PartB&quot;</span>)</span><br><span class="line">    .<span class="built_in">AddPart</span>(<span class="string">&quot;PartC&quot;</span>)</span><br><span class="line">    .<span class="built_in">Build</span>();</span><br><span class="line">product<span class="number">1.</span><span class="built_in">ShowParts</span>();</span><br></pre></td></tr></table></figure></div></div></div>
+<h2 id="fortran"><a class="markdownIt-Anchor" href="#fortran"></a> Fortran</h2>
+<div class="note danger"><p>以下代码只尽量确保与 CPP 形式一致，不一定是最佳实践</p>
+</div>
+<div class="tabs" id="implementation-fortran"><ul class="nav-tabs"><li class="tab active"><a href="#implementation-fortran-1">链式模式</a></li></ul><div class="tab-content"><div class="tab-pane active" id="implementation-fortran-1"><p>基于 CPP 链式模式修改，相较于经典模式更灵活，但 Fortran 不支持 Fluent Interface 因此只能逐个定义</p>
+<div class="note danger"><p>product part 基于链表实现，需注意是否存在内存泄露，此处未做检查</p>
+</div>
+<ol>
+<li>定义产品类</li>
+</ol>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> product_class</span><br><span class="line">  <span class="keyword">implicit</span> <span class="keyword">none</span></span><br><span class="line">  <span class="keyword">private</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> :: ProductClass</span><br><span class="line"></span><br><span class="line">  <span class="keyword">type</span> :: PartList</span><br><span class="line">      <span class="keyword">character</span>(len=<span class="number">256</span>) :: <span class="keyword">data</span></span><br><span class="line">      <span class="keyword">type</span>(PartList), <span class="keyword">pointer</span> :: next =&gt; null()</span><br><span class="line">  <span class="keyword">end</span> <span class="keyword">type</span> PartList</span><br><span class="line"></span><br><span class="line">  <span class="keyword">type</span> :: ProductClass</span><br><span class="line">      <span class="keyword">integer</span> :: id</span><br><span class="line">      <span class="keyword">character</span>(len=<span class="number">256</span>) :: <span class="keyword">name</span></span><br><span class="line">      <span class="keyword">type</span>(PartList), <span class="keyword">pointer</span> :: parts =&gt; null()</span><br><span class="line">  <span class="keyword">contains</span></span><br><span class="line">      <span class="keyword">procedure</span>, <span class="keyword">pass</span>, <span class="keyword">public</span> :: add_part =&gt; add_part</span><br><span class="line">      <span class="keyword">procedure</span>, <span class="keyword">pass</span>, <span class="keyword">public</span> :: show_parts =&gt; show_parts</span><br><span class="line">      <span class="keyword">final</span> :: destructor</span><br><span class="line">  <span class="keyword">end</span> <span class="keyword">type</span> ProductClass</span><br><span class="line"></span><br><span class="line"><span class="keyword">contains</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">subroutine</span></span> add_part(this, part)</span><br><span class="line">      <span class="keyword">class</span>(ProductClass), <span class="keyword">intent</span>(inout) :: this</span><br><span class="line">      <span class="keyword">character</span>(len=*), <span class="keyword">intent</span>(<span class="keyword">in</span>) :: part</span><br><span class="line">      <span class="keyword">type</span>(PartList), <span class="keyword">pointer</span> :: new_node</span><br><span class="line">      <span class="keyword">type</span>(PartList), <span class="keyword">pointer</span> :: current</span><br><span class="line"></span><br><span class="line">      <span class="built_in">allocate</span>(new_node)</span><br><span class="line">      new_node%<span class="keyword">data</span> = part</span><br><span class="line">      new_node%next =&gt; null()</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (<span class="keyword">.not.</span> <span class="built_in">associated</span>(this%parts)) <span class="keyword">then</span></span><br><span class="line">          this%parts =&gt; new_node</span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">          current =&gt; this%parts</span><br><span class="line">          <span class="keyword">do</span> <span class="keyword">while</span> (<span class="built_in">associated</span>(current%next))</span><br><span class="line">              current =&gt; current%next</span><br><span class="line">          <span class="keyword">end</span> <span class="keyword">do</span></span><br><span class="line">          current%next =&gt; new_node</span><br><span class="line">      <span class="keyword">end</span> <span class="keyword">if</span></span><br><span class="line">  <span class="keyword">end</span> <span class="function"><span class="keyword">subroutine</span></span> add_part</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">subroutine</span></span> show_parts(this)</span><br><span class="line">      <span class="keyword">class</span>(ProductClass), <span class="keyword">intent</span>(<span class="keyword">in</span>) :: this</span><br><span class="line">      <span class="keyword">type</span>(PartList), <span class="keyword">pointer</span> :: current</span><br><span class="line"></span><br><span class="line">      <span class="built_in">print</span> *, <span class="string">&quot;Product parts:&quot;</span></span><br><span class="line">      current =&gt; this%parts</span><br><span class="line">      <span class="keyword">do</span> <span class="keyword">while</span> (<span class="built_in">associated</span>(current))</span><br><span class="line">          <span class="built_in">print</span> *, current%<span class="keyword">data</span></span><br><span class="line">          current =&gt; current%next</span><br><span class="line">      <span class="keyword">end</span> <span class="keyword">do</span></span><br><span class="line">      <span class="built_in">print</span> *, <span class="string">&quot;ID:&quot;</span>, this%id, <span class="string">&quot;, Name:&quot;</span>, this%<span class="keyword">name</span></span><br><span class="line">  <span class="keyword">end</span> <span class="function"><span class="keyword">subroutine</span></span> show_parts</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">subroutine</span></span> destructor(this)</span><br><span class="line">      <span class="keyword">type</span>(ProductClass), <span class="keyword">intent</span>(inout) :: this</span><br><span class="line">      <span class="keyword">type</span>(PartList), <span class="keyword">pointer</span> :: current, next</span><br><span class="line"></span><br><span class="line">      current =&gt; this%parts</span><br><span class="line">      <span class="keyword">do</span> <span class="keyword">while</span> (<span class="built_in">associated</span>(current))</span><br><span class="line">          next =&gt; current%next</span><br><span class="line">          <span class="built_in">deallocate</span>(current)</span><br><span class="line">          current =&gt; next</span><br><span class="line">      <span class="keyword">end</span> <span class="keyword">do</span></span><br><span class="line">      this%parts =&gt; null()</span><br><span class="line">  <span class="keyword">end</span> <span class="function"><span class="keyword">subroutine</span></span> destructor</span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span> <span class="keyword">module</span> product_class</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>定义建造者</li>
+</ol>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> chain_builder</span><br><span class="line">  <span class="keyword">use</span> product_class, <span class="keyword">only</span>: ProductClass</span><br><span class="line">  <span class="keyword">implicit</span> <span class="keyword">none</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> :: ChainBuilder</span><br><span class="line"></span><br><span class="line">  <span class="keyword">type</span> :: ChainBuilder</span><br><span class="line">      <span class="keyword">private</span></span><br><span class="line">      <span class="keyword">type</span>(ProductClass) :: <span class="built_in">product</span></span><br><span class="line">  <span class="keyword">contains</span></span><br><span class="line">      <span class="keyword">procedure</span>, <span class="keyword">public</span>, <span class="keyword">pass</span> :: reset_product</span><br><span class="line">      <span class="keyword">procedure</span>, <span class="keyword">public</span>, <span class="keyword">pass</span> :: add_part</span><br><span class="line">      <span class="keyword">procedure</span>, <span class="keyword">public</span>, <span class="keyword">pass</span> :: build</span><br><span class="line">  <span class="keyword">end</span> <span class="keyword">type</span> ChainBuilder</span><br><span class="line"></span><br><span class="line"><span class="keyword">contains</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">subroutine</span></span> reset_product(this, id, <span class="keyword">name</span>)</span><br><span class="line">      <span class="keyword">class</span>(ChainBuilder), <span class="keyword">intent</span>(inout) :: this</span><br><span class="line">      <span class="keyword">integer</span>, <span class="keyword">intent</span>(<span class="keyword">in</span>) :: id</span><br><span class="line">      <span class="keyword">character</span>(len=*), <span class="keyword">intent</span>(<span class="keyword">in</span>) :: <span class="keyword">name</span></span><br><span class="line">  <span class="keyword">continue</span></span><br><span class="line">      this%<span class="built_in">product</span>%id = id</span><br><span class="line">      this%<span class="built_in">product</span>%<span class="keyword">name</span> = <span class="keyword">name</span></span><br><span class="line">      this%<span class="built_in">product</span>%parts =&gt; null()</span><br><span class="line">  <span class="keyword">end</span> <span class="function"><span class="keyword">subroutine</span></span> reset_product</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">subroutine</span></span> add_part(this, part)</span><br><span class="line">      <span class="keyword">class</span>(ChainBuilder), <span class="keyword">intent</span>(inout) :: this</span><br><span class="line">      <span class="keyword">character</span>(len=*), <span class="keyword">intent</span>(<span class="keyword">in</span>) :: part</span><br><span class="line">  <span class="keyword">continue</span></span><br><span class="line">      <span class="keyword">call</span> this%<span class="built_in">product</span>%add_part(part)</span><br><span class="line">  <span class="keyword">end</span> <span class="function"><span class="keyword">subroutine</span></span> add_part</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">function</span></span> build(this) result(<span class="built_in">product</span>)</span><br><span class="line">      <span class="keyword">class</span>(ChainBuilder), <span class="keyword">intent</span>(inout) :: this</span><br><span class="line">      <span class="keyword">type</span>(ProductClass) :: <span class="built_in">product</span></span><br><span class="line">  <span class="keyword">continue</span></span><br><span class="line">      <span class="built_in">product</span> = this%<span class="built_in">product</span></span><br><span class="line">  <span class="keyword">end</span> <span class="function"><span class="keyword">function</span></span> build</span><br><span class="line"><span class="keyword">end</span> <span class="keyword">module</span> chain_builder</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>创建产品</li>
+</ol>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span>(ChainBuilder) :: builder</span><br><span class="line"><span class="keyword">type</span>(ProductClass) :: product1, product2</span><br><span class="line"></span><br><span class="line"><span class="keyword">call</span> builder%reset_product(<span class="number">101</span>, <span class="string">&quot;Product 1&quot;</span>)</span><br><span class="line"><span class="keyword">call</span> builder%add_part(<span class="string">&quot;PartA&quot;</span>)</span><br><span class="line"><span class="keyword">call</span> builder%add_part(<span class="string">&quot;PartB&quot;</span>)</span><br><span class="line"><span class="keyword">call</span> builder%add_part(<span class="string">&quot;PartC&quot;</span>)</span><br><span class="line">product1 = builder%build()</span><br><span class="line"><span class="keyword">call</span> product1%show_parts()</span><br><span class="line"></span><br><span class="line"><span class="keyword">call</span> builder%reset_product(<span class="number">202</span>, <span class="string">&quot;Product 2&quot;</span>)</span><br><span class="line"><span class="keyword">call</span> builder%add_part(<span class="string">&quot;PartX&quot;</span>)</span><br><span class="line"><span class="keyword">call</span> builder%add_part(<span class="string">&quot;PartY&quot;</span>)</span><br><span class="line">product2 = builder%build()</span><br><span class="line"><span class="keyword">call</span> product2%show_parts()</span><br></pre></td></tr></table></figure></div></div></div>
+<h2 id="reference"><a class="markdownIt-Anchor" href="#reference"></a> Reference</h2>
+<p><a target="_blank" rel="noopener" href="https://www.runoob.com/design-pattern/builder-pattern.html">菜鸟教程 | 建造者模式</a><br />
+<a target="_blank" rel="noopener" href="https://blog.csdn.net/flzjcsg3/article/details/145719532">FLZJ_KL | 建造者模式</a><br />
+<a target="_blank" rel="noopener" href="https://www.cnblogs.com/jijm123/p/18366851">癫狂编程 | C++实现设计模式——Builder模式</a></p>
+
+      </div>
+      
+      
+      
+    </div>
+  <ul class="breadcrumb">
+            <li><a href="/Docs/">DOCS</a></li>
+            <li><a href="/Docs/CST/">CST</a></li>
+            <li><a href="/Docs/CST/design/">DESIGN</a></li>
+            <li>DESIGN-PATTERN-BUILDER</li>
+  </ul>
+
+    
+    
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2019 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Dewedseed</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">1k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">5 mins.</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/Dewedseed/Dewedseed.github.io" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js","integrity":"sha256-stuqcu2FrjYCXDOytWFA5SoUE/r3nkp6gTglzNSlavU="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css" integrity="sha256-UF1fgpAiu3tPJN/uCqEUHNe7pnr+QR0SQDNfgglgtcM=" crossorigin="anonymous">
+  <script class="next-config" data-name="katex" type="application/json">{"copy_tex_js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/copy-tex.min.js","integrity":"sha256-Us54+rSGDSTvIhKKUs4kygE2ipA0RXpWWh0/zLqw3bs="}}</script>
+  <script src="/js/third-party/math/katex.js"></script>
+
+
+
+</body>
+</html>
